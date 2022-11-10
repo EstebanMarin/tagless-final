@@ -77,5 +77,29 @@ object Tagless {
     // summary solves de problem but we loose compile type safety
   }
 
+  object TaglessInitial {
+    trait Expr[A]
+    case class B(boolean: Boolean) extends Expr[Boolean]
+    case class Or(left: Expr[Boolean], right: Expr[Boolean])
+        extends Expr[Boolean]
+    case class And(left: Expr[Boolean], right: Expr[Boolean])
+        extends Expr[Boolean]
+    case class Not(expr: Expr[Boolean]) extends Expr[Boolean]
+    case class I(int: Int) extends Expr[Int]
+    case class Sum(left: Expr[Int], right: Expr[Int]) extends Expr[Int]
+
+    def eval[A](expr: Expr[A]): A = expr match {
+      case And(left, right) => eval(left) && eval(right)
+      case B(boolean)       => boolean
+      case I(int)           => int
+      case Not(expr)        => !eval(expr)
+      case Or(left, right)  => eval(left) || eval(right)
+      case Sum(left, right) => eval(left) + eval(right)
+    }
+
+    val test = eval(Or(B(true), And(B(true), B(false))))
+    val test2 = eval(Sum(I(24), I(-3)))
+  }
+
   def main(args: Array[String]) = println("Hello")
 }
