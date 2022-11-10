@@ -6,7 +6,8 @@ Bases in the storyline that (FP fundamentals)[https://github.com/47degrees/fp-fu
 # Tagless Final
 - (Step 0: Fundations)[] Expression in functional programming
 - (Step 1: Understanding the problem)[] What is this expression problem
+- (Step 2: Tag the type)[]
 
 ### More on Tagless          
     - (Dev Inside you)[https://github.com/DevInsideYou/tagless-final]
-    -  (RJVM)[https://blog.rockthejvm.com/tagless-final/]
+    -  (**RJVM**)[https://blog.rockthejvm.com/tagless-final/]
