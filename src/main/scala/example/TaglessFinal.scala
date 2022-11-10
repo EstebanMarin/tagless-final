@@ -101,5 +101,28 @@ object Tagless {
     val test2 = eval(Sum(I(24), I(-3)))
   }
 
+  object TaglessFinal {
+    trait Expr[A] {
+      val value: A
+    }
+
+    def B(boolean: Boolean) = new Expr[Boolean] { val value: Boolean = boolean }
+    def Or(left: Expr[Boolean], right: Expr[Boolean]) = new Expr[Boolean] {
+      val value: Boolean = left.value || right.value
+    }
+    def And(left: Expr[Boolean], right: Expr[Boolean]) = new Expr[Boolean] {
+      val value: Boolean = left.value && right.value
+    }
+    def Not(expr: Expr[Boolean]) = new Expr[Boolean] {
+      val value: Boolean = !expr.value
+    }
+    def I(int: Int) = new Expr[Int] { val value: Int = int }
+    def Sum(left: Expr[Int], right: Expr[Int]) = new Expr[Int] {
+      val value: Int = left.value + right.value
+    }
+    val test = (Or(B(true), And(B(true), B(false))))
+    val test2 = (Sum(I(24), I(-3)))
+  }
+
   def main(args: Array[String]) = println("Hello")
 }
