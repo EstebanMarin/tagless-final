@@ -48,5 +48,34 @@ object Tagless {
 
   }
 
+  object libraryExtensionTag {
+
+    sealed abstract class Expr(val tag: String)
+    case class B(boolean: Boolean) extends Expr("bool")
+    case class Or(left: Expr, right: Expr) extends Expr("bool")
+    case class And(left: Expr, right: Expr) extends Expr("bool")
+    case class Not(expr: Expr) extends Expr("bool")
+    case class I(int: Int) extends Expr("int")
+    case class Sum(left: Expr, right: Expr) extends Expr("int")
+
+    def eval_2(newTrait: Expr): Any = newTrait match {
+      case B(boolean) => boolean
+      case Or(left, right) =>
+        if (left.tag == "bool" && right.tag == "bool")
+          eval_2(left).asInstanceOf[Boolean] || eval_2(right)
+            .asInstanceOf[Boolean]
+      case And(left, right) =>
+        if (left.tag == "bool" && right.tag == "bool")
+          eval_2(left).asInstanceOf[Boolean] && eval_2(right)
+            .asInstanceOf[Boolean]
+      case Not(expr) =>
+        if (expr.tag == "bool") !eval_2(expr).asInstanceOf[Boolean]
+      case I(int) => int
+      case Sum(left, right) =>
+        eval_2(left).asInstanceOf[Int] + eval_2(right).asInstanceOf[Int]
+    }
+    // summary solves de problem but we loose compile type safety
+  }
+
   def main(args: Array[String]) = println("Hello")
 }
